@@ -1,0 +1,8 @@
+# cài đặt vue-cli
+$ npm install --global vue-cli
+# tạo một dự án mới với template "webpack"
+$ vue init webpack my-project
+# cài đặt các thư viện phụ thuộc và bắt tay vào việc!
+$ cd my-project
+$ npm run dev
+
