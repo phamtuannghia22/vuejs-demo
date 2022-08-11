@@ -1,0 +1,15 @@
+#directive{
+}
+.container-center{
+  width: fit-content;
+  height: fit-content;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  border: 2px solid darkmagenta;
+}
+#hover-me{
+  width: 150px;
+  height: 150px;
+  background-color: orangered;
+}
