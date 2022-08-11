@@ -6,3 +6,7 @@ $ vue init webpack my-project
 $ cd my-project
 $ npm run dev
 
+# add bootstrapvue vào project
+$ npm install vue bootstrap bootstrap-vue
+$ yarn add vue bootstrap bootstrap-vue
+
