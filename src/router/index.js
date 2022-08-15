@@ -5,6 +5,7 @@ import DataBinding from '@/components/DataBinding'
 import Directive from '@/components/Directive'
 import EventModifiers from '@/components/EventModifiers'
 import KeyModifiers from '@/components/KeyModifiers'
+import Computed from '@/components/Computed'
 
 Vue.use(Router)
 
@@ -34,6 +35,11 @@ export default new Router({
       path: '/Key-Modifiers',
       name: 'Key-Modifiers',
       component: KeyModifiers
+    },
+    {
+      path: '/Computed',
+      name: 'Computed',
+      component: Computed
     }
   ]
 })
