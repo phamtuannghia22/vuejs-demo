@@ -2,7 +2,7 @@
   <div>
     <h1 class="text-primary mt-3 mb-0 text-center">Key Modifiers</h1>
     <div class="my-5 p-5 container-center mx-auto">
-      <h2 class="text-danger fw-bold text-center">Key Default (Enter, space                                  )</h2>
+      <h2 class="text-danger fw-bold text-center">Key Default (Enter, space)</h2>
       <input type="text" placeholder="Key Modifiers"
              v-on:keyup.enter="onEnter()"
              v-on:keyup.32="onSpace()"
