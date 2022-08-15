@@ -1,7 +1,7 @@
 <template>
   <div>
+    <h1 class="text-primary mt-3 mb-0 text-center">Computed</h1>
     <div class="my-5 p-5 container-center mx-auto">
-      <h1 class="fw-bold text-center text-danger">Computed</h1>
       <!-- Computed được tính toán dựa trên dữ liệu có sẵn -->
       <!-- Computed chỉ được chạy bất kì dữ liệu trong computed thay đổi -->
       <p>Count = 1, A = 5, B = 2</p>
