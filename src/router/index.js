@@ -6,6 +6,7 @@ import Directive from '@/components/Directive'
 import EventModifiers from '@/components/EventModifiers'
 import KeyModifiers from '@/components/KeyModifiers'
 import Computed from '@/components/Computed'
+import LifecycleHooks from '@/components/LifecycleHooks'
 
 Vue.use(Router)
 
@@ -40,6 +41,11 @@ export default new Router({
       path: '/Computed',
       name: 'Computed',
       component: Computed
+    },
+    {
+      path: '/Lifecycle-Hooks',
+      name: 'LifecycleHooks',
+      component: LifecycleHooks
     }
   ]
 })
