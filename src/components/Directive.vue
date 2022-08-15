@@ -4,7 +4,7 @@
     <div class="row container">
 
       <!--v-on-->
-      <div id="v-on" class="m-auto p-5 container-center mx-auto">
+      <div id="v-on" class="my-3 p-5 container-center mx-auto">
         <h2 class="fw-bold text-danger">V-on</h2>
         <!--Click-->
         <p>Count: {{ count }}</p>
@@ -23,7 +23,7 @@
       <!--end v-on-->
 
       <!--V-bind-->
-      <div id="v-bind" class="m-auto p-5 container-center mx-auto">
+      <div id="v-bind" class="my-3 p-5 container-center mx-auto">
         <h2 class="text-danger fw-bold my-3 text-center">V-bind</h2>
         <a class="p-5" v-bind:href="url">Wuyi Art</a>
         <h4 class="text-danger fw-bold my-3 text-center">Ràng buộc class</h4>
@@ -38,14 +38,36 @@
       </div>
       <!--end v-bind-->
 
-      <!-- V model -->
-      <div class="m-auto p-5 container-center mx-auto">
+      <!-- V-model -->
+      <div class="my-3 p-5 container-center mx-auto">
         <h2 class="text-danger fw-bold text-center">V-model (Two-way binding)</h2>
         <p>{{ userName }}</p>
         <input v-model="userName" type="text" placeholder="user name"/>
       </div>
-
       <!-- End v-model -->
+
+      <!-- V-if -->
+      <div class=" my-3 p-5 container-center mx-auto">
+        <h2 class="text-danger fw-bold text-center">V-if</h2>
+        <p>Check : {{ check }}</p>
+        <p v-if="check">If check = true, Hello World</p>
+        <p v-if="!check">If check = false, Destroy World</p>
+        <!-- <p v-else-if="!check">If check = false, Destroy World</p> -->
+        <!-- <p v-else>If check = false, Destroy World</p> -->
+        <button @click="changeCheck()">Change check</button>
+      </div>
+      <!-- End v-if -->
+
+      <!-- V-show -->
+      <div class=" my-3 p-5 container-center mx-auto">
+        <h2 class="text-danger fw-bold text-center">V-show</h2>
+        <p>Check : {{ check }}</p>
+        <p v-show="check">If check = true, Hello World</p>
+        <p v-show="!check">If check = false, Destroy World</p>
+        <button @click="changeCheck()">Change check</button>
+      </div>
+      <!-- End v-show -->
+
     </div>
 
   </div>
@@ -62,7 +84,9 @@ export default {
       url: 'https://phamtuannghia22.github.io/wuyi-art/', // dùng trong v-bind
       isBackgroundRed: true, // dùng trong v-bind
 
-      userName: '' // dùng trong v-model
+      userName: '', // dùng trong v-model
+
+      check: true // dùng trong v-if và v-show
     }
   },
   methods: {
@@ -78,6 +102,9 @@ export default {
     },
     changeBackground () {
       this.isBackgroundRed = !this.isBackgroundRed
+    },
+    changeCheck () {
+      this.check = !this.check
     }
 
   }
