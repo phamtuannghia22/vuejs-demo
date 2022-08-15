@@ -1,6 +1,7 @@
 <template>
   <div id="directive">
     <h1 class="text-primary mt-3 mb-0 text-center">Directive</h1>
+
     <!--v-on-->
     <div id="v-on" class="my-5 p-5 container-center mx-auto">
       <h2 class="fw-bold text-danger">V-on</h2>
@@ -19,12 +20,21 @@
       </div>
     </div>
     <!--end v-on-->
+
     <!--V-bind-->
     <div class="my-5 p-5 container-center mx-auto">
       <h2 class="text-danger fw-bold my-3 text-center">V-bind</h2>
       <a class="p-5" v-bind:href="url">Wuyi Art</a>
     </div>
     <!--end v-bind-->
+
+    <!-- V model -->
+    <div class="my-5 p-5 container-center mx-auto">
+      <h2 class="text-danger fw-bold text-center">V-model (Two-way binding)</h2>
+      <p>{{userName}}</p>
+      <input v-model="userName" type="text" placeholder="user name" />
+    </div>
+    <!-- End v-model -->
   </div>
 </template>
 
@@ -35,7 +45,8 @@ export default {
     return {
       count: 0,
       position: 'x = 0  y = 0',
-      url: 'https://phamtuannghia22.github.io/wuyi-art/'
+      url: 'https://phamtuannghia22.github.io/wuyi-art/',
+      userName: ''
     }
   },
   methods: {
