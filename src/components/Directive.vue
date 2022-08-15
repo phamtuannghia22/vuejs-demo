@@ -31,14 +31,18 @@
           <div id="vbind-div" v-bind:class="{'bg-red': isBackgroundRed}"></div>
           <button class="ms-3 my-auto" v-on:click="changeBackground()">Change background</button>
         </div>
+        <div class="d-flex justify-content-between">
+          <div
+            v-bind:style="{'backgroundColor': 'green', 'width': '100px', 'height':'100px', 'marginTop':'20px'}"></div>
+        </div>
       </div>
       <!--end v-bind-->
 
       <!-- V model -->
       <div class="m-auto p-5 container-center mx-auto">
         <h2 class="text-danger fw-bold text-center">V-model (Two-way binding)</h2>
-        <p>{{userName}}</p>
-        <input v-model="userName" type="text" placeholder="user name" />
+        <p>{{ userName }}</p>
+        <input v-model="userName" type="text" placeholder="user name"/>
       </div>
 
       <!-- End v-model -->
