@@ -24,3 +24,17 @@
   height: 150px;
   background-color: lightsalmon;
 }
+
+#vbind-div{
+  width: 100px;
+  height: 100px;
+  background-color: blue;
+}
+.bg-red{
+  background-color: red !important;
+}
+
+#v-bind button{
+  width: 100px;
+  height: 60px;
+}
