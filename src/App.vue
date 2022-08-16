@@ -1,13 +1,41 @@
 <template>
   <div id="app">
-<!--    <img src="./assets/logo.png">-->
+    <ul>
+      <li v-for="(router,index) in routersSortByTitle" v-bind:key="index">
+        <router-link v-bind:to="router.url">{{ router.title }}</router-link>
+      </li>
+    </ul>
     <router-view/>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  data () {
+    return {
+      routers: [
+        {title: 'Directive', url: '/Directive'},
+        {title: 'DataBinding', url: '/DataBinding'},
+        {title: 'Event Modifiers', url: '/Event-Modifiers'},
+        {title: 'Key Modifiers', url: '/Key-Modifiers'},
+        {title: 'Computed', url: '/Computed'},
+        {title: 'Lifecycle Hooks', url: '/Lifecycle-Hooks'},
+        {title: 'Props', url: '/Props'},
+        {title: 'Ref', url: '/Ref'}
+      ]
+    }
+  },
+  computed: {
+    routersSortByTitle () {
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      return this.routers.sort(function (a, b) {
+        if (a.title < b.title) { return -1 }
+        if (a.title > b.title) { return 1 }
+        return 0
+      })
+    }
+  }
 }
 </script>
 
