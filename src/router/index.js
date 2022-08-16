@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
-import DataBinding from '@/components/DataBinding'
-import Directive from '@/components/Directive'
-import EventModifiers from '@/components/EventModifiers'
-import KeyModifiers from '@/components/KeyModifiers'
-import Computed from '@/components/Computed'
-import LifecycleHooks from '@/components/LifecycleHooks'
+import DataBinding from '@/pages/DataBinding'
+import Directive from '@/pages/Directive'
+import EventModifiers from '@/pages/EventModifiers'
+import KeyModifiers from '@/pages/KeyModifiers'
+import Computed from '@/pages/Computed'
+import LifecycleHooks from '@/pages/LifecycleHooks'
 
 Vue.use(Router)
 
