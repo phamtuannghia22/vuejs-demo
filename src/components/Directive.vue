@@ -68,6 +68,42 @@
       </div>
       <!-- End v-show -->
 
+      <!-- V-for -->
+      <div class=" my-3 p-5 container-center mx-auto">
+        <h2 class="text-danger fw-bold text-center">V-for</h2>
+        <h3 class="text-primary m-3">For array</h3>
+        <div class="d-flex mb-3">
+          <div class="border p-3 mx-2" v-for="(user,index) in listUser" v-bind:key="index">
+            <p>User name: {{user.name}}</p>
+            <p>Age: {{user.age}}</p>
+            <p>User id: {{user.id}}</p>
+          </div>
+        </div>
+        <h3 class="text-primary m-3">For Obj</h3>
+        <div class="d-flex border mb-3">
+          <div class="p-3 mx-2" v-for="(value,key ,index) in userA" v-bind:key="index">
+            <p>{{key}} : {{value}}</p>
+          </div>
+        </div>
+        <h3 class="text-primary m-3">For with computed</h3>
+        <div class="d-flex mb-3">
+          <div class="border p-3 mx-2" v-for="(user,index) in listUserActive" v-bind:key="index">
+            <p>User name: {{user.name}}</p>
+            <p>Age: {{user.age}}</p>
+            <p>User id: {{user.id}}</p>
+          </div>
+        </div>
+        <button v-on:click="changeData()">Change data</button>
+      </div>
+      <!-- End v-for -->
+
+      <!-- V-HTML -->
+      <div class=" my-3 p-5 container-center mx-auto">
+        <h2 class="text-danger fw-bold text-center">V-html</h2>
+        <div v-html="dataForVHTML"></div>
+      </div>
+      <!-- End v-show -->
+
     </div>
 
   </div>
@@ -86,7 +122,25 @@ export default {
 
       userName: '', // dùng trong v-model
 
-      check: true // dùng trong v-if và v-show
+      check: true, // dùng trong v-if và v-show
+
+      listUser: [ // dung trong v-for
+        {id: 1, name: 'A', age: 25, isActive: true},
+        {id: 2, name: 'B', age: 22, isActive: false},
+        {id: 3, name: 'C', age: 26, isActive: true},
+        {id: 4, name: 'D', age: 19, isActive: false}
+      ],
+      userA: { // dung trong v-for
+        age: 23,
+        name: 'A'
+      },
+
+      dataForVHTML: '<p>Đấu gi&aacute; t&agrave;i sản l&agrave; h&igrave;nh <em>thức b&aacute;n t&agrave;' +
+        'i sản c&oacute;' + ' từ hai người trở l&ecirc;n tham gia đấu gi&aacute; theo nguy&ecirc;n tắc, tr&igrave;nh ' +
+        'tự v&agrave; thủ tục được quy định tại Luật Đấu gi&aacute; t&agrave;i sản.&nbsp;</em></p><p>Vậy tr&igrave;nh tự,' +
+        ' thủ tụ<strong>c đăng k&yacute; b&aacute;n đấu gi&aacute; t&agrave;i sản được t' +
+        '</strong>hực hiện như thế n&agrave;o? C&ugrave;ng t&igrave;m hiểu b&agrave;' +
+        'i viết dưới đ&acirc;y để hiểu th&ecirc;m về vấn đề n&agrave;y.</p>' // dung trong v-html
     }
   },
   methods: {
@@ -105,8 +159,20 @@ export default {
     },
     changeCheck () {
       this.check = !this.check
+    },
+    changeData () {
+      // Thay doi phan tu trong mang (gan thong thong UI se khong render lai)
+      this.$set(this.listUser, 3, {id: 5, name: 'E', age: 29, isActive: false})
+      // Them key value trong obj
+      this.$set(this.userA, 'id', 8)
+      console.log(this.listUser)
     }
 
+  },
+  computed: {
+    listUserActive () {
+      return this.listUser.filter((user) => user.isActive)
+    }
   }
 }
 </script>
