@@ -25,7 +25,6 @@ export default {
 
   // Giai đoạn khởi tạo
   beforeCreate () { // hook chạy mỗi khi khởi tạo một instance. Tại thời điểm này, data, event chưa được thiết lập.
-
     logBB('Before create:')
     console.log(this.content)
   },
