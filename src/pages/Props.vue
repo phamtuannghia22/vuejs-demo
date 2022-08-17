@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="my-3 p-5 container-center mx-auto">
-      <component-header></component-header>
+      <component-header>
+        <p>This is slot</p>
+      </component-header>
       <component-footer v-bind:titleFooter="titleFooter"
                         v-on:changeTitleFooter="changeTitleFromFooter"></component-footer>
     </div>
