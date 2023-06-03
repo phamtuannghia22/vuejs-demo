@@ -13,13 +13,30 @@ export default {
   name: 'lifecycle-hooks',
   data () {
     return {
-      content: 'Lifecycle Hook'
+      content: 'Lifecycle Hook',
+      arr: []
     }
   },
   methods: {
     changeText () {
       document.getElementById('lifecycle').classList.remove('text-primary')
       this.content = 'Debug'
+    },
+    changeText2 (str) {
+      let count = 1
+      let charPresent = ''
+      let output = ''
+      for (let i = 0; i < str.length; i++) {
+        if (str.charAt(i) === str.charAt(i + 1)) {
+          count++
+          charPresent = str.charAt(i)
+        } else {
+          output += charPresent + count
+          count = 1
+          charPresent = str.charAt(i + 1)
+        }
+      }
+      return output
     }
   },
 
@@ -29,6 +46,11 @@ export default {
   },
   created () { // hook được chạy khi data, event đã thiết lập thành công.
     logBB('Created:', this.content)
+    if (this.arr) {
+      console.log(1)
+    } else {
+      console.log(2)
+    }
   },
 
   // Giai đoạn gắn kết DOM
@@ -37,6 +59,8 @@ export default {
   },
   mounted () { // giai đoạn này, mounted hook sẽ cho phép chúng ta có thể truy cập vào phẩn tử trong DOM. Tức là khi này, DOM đã được gắn kết.
     logBB('Mounted:', document.getElementById('lifecycle'))
+    this.changeText2('aabbbccdda')
+    console.log(this.changeText2('aabbbccdda'))
   },
 
   // Giai đoạn cập nhật DOM
