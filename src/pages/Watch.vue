@@ -8,7 +8,7 @@
     <div class="d-grid">
       <span class="my-3"> {{fullName}} </span>
       <b-button variant="primary" @click="changeName()"> Change name </b-button>
-      <b-button variant="success" @click="changeModel()"> Change model </b-button>
+      <b-button variant="success" class="mt-3" @click="changeModel()"> Change model </b-button>
     </div>
   </div>
 </template>
