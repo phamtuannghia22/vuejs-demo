@@ -22,7 +22,8 @@ export default {
         {title: 'Computed', url: '/Computed'},
         {title: 'Lifecycle Hooks', url: '/Lifecycle-Hooks'},
         {title: 'Props', url: '/Props'},
-        {title: 'Ref', url: '/Ref'}
+        {title: 'Ref', url: '/Ref'},
+        {title: 'Watch', url: '/Watch'}
       ]
     }
   },
