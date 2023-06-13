@@ -7,6 +7,7 @@ import KeyModifiers from '@/pages/KeyModifiers'
 import Computed from '@/pages/Computed'
 import LifecycleHooks from '@/pages/LifecycleHooks'
 import Props from '@/pages/Props'
+import Watch from '@/pages/Watch'
 import Ref from '@/pages/Ref'
 Vue.use(Router)
 
@@ -56,6 +57,11 @@ export default new Router({
       path: '/Ref',
       name: 'Ref',
       component: Ref
+    },
+    {
+      path: '/Watch',
+      name: 'Watch',
+      component: Watch
     }
   ]
 })
