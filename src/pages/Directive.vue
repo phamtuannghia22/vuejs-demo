@@ -66,6 +66,14 @@
         <p v-show="!check">If check = false, Destroy World</p>
         <button @click="changeCheck()">Change check</button>
       </div>
+<!--        Những method thao tác với mảng sẽ update lại DOM-->
+<!--            push()                                      -->
+<!--            pop()                                       -->
+<!--            shift()                                      -->
+<!--            unshift()                                    -->
+<!--            splice()                                     -->
+<!--            sort()                                       -->
+<!--            reverse()                                    -->
       <!-- End v-show -->
 
       <!-- V-for -->
