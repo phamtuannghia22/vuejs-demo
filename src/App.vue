@@ -23,7 +23,8 @@ export default {
         {title: 'Lifecycle Hooks', url: '/Lifecycle-Hooks'},
         {title: 'Props', url: '/Props'},
         {title: 'Ref', url: '/Ref'},
-        {title: 'Watch', url: '/Watch'}
+        {title: 'Watch', url: '/Watch'},
+        {title: 'Vuex', url: '/Vuex'}
       ]
     }
   },

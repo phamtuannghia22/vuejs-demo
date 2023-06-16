@@ -9,6 +9,7 @@ import LifecycleHooks from '@/pages/LifecycleHooks'
 import Props from '@/pages/Props'
 import Watch from '@/pages/Watch'
 import Ref from '@/pages/Ref'
+import VuexPage from '@/pages/VuexPage.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -62,6 +63,11 @@ export default new Router({
       path: '/Watch',
       name: 'Watch',
       component: Watch
+    },
+    {
+      path: '/Vuex',
+      name: 'Vuex',
+      component: VuexPage
     }
   ]
 })
