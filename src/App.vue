@@ -24,7 +24,8 @@ export default {
         {title: 'Props', url: '/Props'},
         {title: 'Ref', url: '/Ref'},
         {title: 'Watch', url: '/Watch'},
-        {title: 'Vuex', url: '/Vuex'}
+        {title: 'Vuex', url: '/Vuex'},
+        {title: 'Provide / Inject', url: '/Provide-Inject'}
       ]
     }
   },

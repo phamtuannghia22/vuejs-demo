@@ -10,6 +10,7 @@ import Props from '@/pages/Props'
 import Watch from '@/pages/Watch'
 import Ref from '@/pages/Ref'
 import VuexPage from '@/pages/VuexPage.vue'
+import ProvideInject from '@/pages/ProvideInject.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -68,6 +69,16 @@ export default new Router({
       path: '/Vuex',
       name: 'Vuex',
       component: VuexPage
+    },
+    {
+      path: '/Vuex',
+      name: 'Vuex',
+      component: VuexPage
+    },
+    {
+      path: '/Provide-Inject',
+      name: 'Provide-Inject',
+      component: ProvideInject
     }
   ]
 })
