@@ -25,7 +25,8 @@ export default {
         {title: 'Ref', url: '/Ref'},
         {title: 'Watch', url: '/Watch'},
         {title: 'Vuex', url: '/Vuex'},
-        {title: 'Provide / Inject', url: '/Provide-Inject'}
+        {title: 'Provide / Inject', url: '/Provide-Inject'},
+        {title: 'Custom Directive', url: '/Custom-Directive'}
       ]
     }
   },
