@@ -2,7 +2,12 @@
   <div>
     <div class="my-3 p-5 container-center mx-auto">
       <component-header>
-        <p>This is slot</p>
+        <template #default>
+          <p>Hip hop never die</p>
+        </template>
+        <template #text1>
+          <p>T Freak</p>
+        </template>
       </component-header>
       <component-footer v-bind:titleFooter="titleFooter"
                         v-on:changeTitleFooter="changeTitleFromFooter"></component-footer>

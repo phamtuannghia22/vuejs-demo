@@ -1,6 +1,7 @@
 <template>
   <header>
     <slot></slot>
+    <slot name="text1"></slot>
     <h3>{{ titleHeader }}</h3>
   </header>
 </template>
