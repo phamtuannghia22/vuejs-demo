@@ -12,6 +12,7 @@ import Ref from '@/pages/Ref'
 import VuexPage from '@/pages/VuexPage.vue'
 import ProvideInject from '@/pages/ProvideInject.vue'
 import CustomDirective from '@/pages/CustomDirective.vue'
+import CropImage from '@/pages/CropImage.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -85,6 +86,11 @@ export default new Router({
       path: '/Custom-Directive',
       name: 'Custom-Directive',
       component: CustomDirective
+    },
+    {
+      path: '/Crop-Image',
+      name: 'Crop-Image',
+      component: CropImage
     }
   ]
 })
