@@ -2,10 +2,11 @@
   <div class="page">
     <div class="position-relative">
       <canvas id="canvas" width="500" height="500" ref="canvasDraw"></canvas>
-      <canvas class="canvas-container-rect position-absolute" width="500" height="500" style="top: 0; left: 0" ref="canvasRef" @mousedown="startDrawingRectangle($event)" @mousemove="drawRectangle($event)" @mouseleave="stopDrawingRectangle" @mouseup="stopDrawingRectangle"></canvas>
+      <canvas class="canvas-container-rect position-absolute" width="500" height="500" style="top: 0; left: 0" ref="canvasCrop" @mousedown="startDrawingRectangle($event)" @mousemove="drawRectangle($event)" @mouseleave="stopDrawingRectangle" @mouseup="stopDrawingRectangle"></canvas>
     </div>
     <b-button size="sm" variant="primary" @click="crop()">Crop</b-button>
     <b-button size="sm" variant="primary" @click="convertImg()">convert</b-button>
+    <b-button size="sm" variant="primary" @click="rotate()">rotate</b-button>
     <img id="img" src="../assets/images/img-cropper.jpeg" hidden />
   </div>
 </template>
@@ -17,77 +18,74 @@ export default {
     return {
       url: 'https://images.unsplash.com/photo-1593642634443-44adaa06623a?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=725&q=80',
       isDrawing: false,
-      contextRef: null,
+      contextCrop: null,
       contextDraw: null,
       canvasOffSetX: null,
       canvasOffSetY: null,
-      startX: null,
-      startY: null,
+      size: 500,
       cropper: {
         width: 0,
         height: 0,
         sx: 0,
         sy: 0
+      },
+      imageUpload: {
+        realWidth: 0,
+        realHeight: 0,
+        width: 0,
+        height: 0,
+        src: '',
+        ratio: 0, /* tỉ lệ kích thước ảnh thật với kích thước show trên màn hình */
+        isHeightGretterWidth: function () {
+          return this.realHeight > this.realWidth
+        }
       }
     }
   },
   mounted () {
-    const canvasDraw = this.$refs.canvasDraw
-    const ctx = canvasDraw.getContext('2d')
     const imgTest = document.getElementById('img')
-    this.url = imgTest.src
-    const image = new Image()
-    image.src = this.url
-
-    image.onload = function () {
-      console.log(image.src)
-      const ratio = image.width / 500
-      const height = image.height / ratio
-      ctx.drawImage(image, 0, 0, 500, height)
-    }
+    this.imageProcessing(imgTest.src)
   },
   methods: {
+    imageProcessing (src) {
+      const canvasDraw = this.$refs.canvasDraw
+      const canvasCrop = this.$refs.canvasCrop
+      this.url = src
+      const image = new Image()
+      image.src = src
+      const self = this
+      image.onload = function () {
+        const size = self.size
+        self.imageUpload.ratio = image.width / 500
+        self.imageUpload.realWidth = image.width
+        self.imageUpload.realHeight = image.height
+        self.imageUpload.width = self.imageUpload.isHeightGretterWidth() ? (image.width / self.imageUpload.ratio) : size
+        self.imageUpload.height = self.imageUpload.isHeightGretterWidth() ? size : (image.height / self.imageUpload.ratio)
+
+        self.contextCrop = canvasCrop.getContext('2d')
+        self.contextCrop.lineCap = 'round'
+        self.contextCrop.strokeStyle = 'black'
+        self.contextCrop.lineWidth = 1
+        self.contextDraw = canvasDraw.getContext('2d')
+        canvasDraw.width = self.imageUpload.width
+        canvasDraw.height = self.imageUpload.height
+        canvasCrop.width = self.imageUpload.width
+        canvasCrop.height = self.imageUpload.height
+
+        self.contextDraw.drawImage(image, 0, 0, self.imageUpload.width, self.imageUpload.height)
+      }
+    },
     startDrawingRectangle  (nativeEvent) {
       console.log('start draw')
-      const canvas = this.$refs.canvasRef
-      const canvasDraw = this.$refs.canvasDraw
-      // canvas.width = 500
-      // canvas.height = 500
-
-      this.contextRef = canvas.getContext('2d')
-      this.contextRef.lineCap = 'round'
-      this.contextRef.strokeStyle = 'black'
-      this.contextRef.lineWidth = 1
-      this.contextDraw = canvasDraw.getContext('2d')
+      const canvas = this.$refs.canvasCrop
       const canvasOffSet = canvas.getBoundingClientRect()
       this.canvasOffSetX = canvasOffSet.left
       this.canvasOffSetY = canvasOffSet.top
       nativeEvent.preventDefault()
       nativeEvent.stopPropagation()
-
-      this.startX = nativeEvent.clientX - this.canvasOffSetX
-      this.startY = nativeEvent.clientY - this.canvasOffSetY
-
+      this.cropper.sx = nativeEvent.clientX - this.canvasOffSetX
+      this.cropper.sy = nativeEvent.clientY - this.canvasOffSetY
       this.isDrawing = true
-    },
-    crop () {
-      const canvas = this.$refs.canvasDraw
-      const ctx = canvas.getContext('2d')
-
-      const image = new Image()
-      image.src = this.url
-      const self = this
-      image.onload = function () {
-        self.contextRef.clearRect(0, 0, self.$refs.canvasRef.width, self.$refs.canvasRef.height)
-        self.contextDraw.clearRect(0, 0, self.$refs.canvasDraw.width, self.$refs.canvasDraw.height)
-        const ratio = image.width / 500
-        ctx.drawImage(image, self.cropper.sx * ratio, self.cropper.sy * ratio, self.cropper.width * ratio, self.cropper.height * ratio, 0, 0, 500, self.cropper.height * ratio / (self.cropper.width * ratio / 500))
-      }
-    },
-    convertImg () {
-      const canvas = document.getElementById('canvas')
-      console.log(canvas)
-      console.log(canvas.toDataURL())
     },
     drawRectangle (nativeEvent) {
       if (!this.isDrawing) {
@@ -99,18 +97,42 @@ export default {
 
       const newMouseX = nativeEvent.clientX - this.canvasOffSetX
       const newMouseY = nativeEvent.clientY - this.canvasOffSetY
-      const rectWidht = newMouseX - this.startX
-      const rectHeight = newMouseY - this.startY
+      const rectWidht = newMouseX - this.cropper.sx
+      const rectHeight = newMouseY - this.cropper.sy
 
-      this.contextRef.clearRect(0, 0, this.$refs.canvasRef.width, this.$refs.canvasRef.height)
-      this.contextRef.strokeRect(this.startX, this.startY, rectWidht, rectHeight)
+      this.contextCrop.clearRect(0, 0, this.$refs.canvasCrop.width, this.$refs.canvasCrop.height)
+      this.contextCrop.strokeRect(this.cropper.sx, this.cropper.sy, rectWidht, rectHeight)
       this.cropper.width = rectWidht
       this.cropper.height = rectHeight
-      this.cropper.sx = this.startX
-      this.cropper.sy = this.startY
+    },
+    crop () {
+      const canvasDraw = this.$refs.canvasDraw
+      const image = new Image()
+      image.src = this.url
+      const self = this
+      image.onload = function () {
+        self.contextCrop.clearRect(0, 0, self.$refs.canvasCrop.width, self.$refs.canvasCrop.height)
+        self.contextDraw.clearRect(0, 0, self.$refs.canvasDraw.width, self.$refs.canvasDraw.height)
+        self.contextDraw.drawImage(image, self.cropper.sx * self.imageUpload.ratio, self.cropper.sy * self.imageUpload.ratio, self.cropper.width * self.imageUpload.ratio, self.cropper.height * self.imageUpload.ratio, 0, 0, self.size, self.cropper.height * self.size / self.cropper.width)
+        // console.log(canvasDraw.toDataURL())
+        self.imageProcessing(canvasDraw.toDataURL())
+      }
+    },
+    convertImg () {
+      const canvas = document.getElementById('canvas')
+      console.log(canvas)
+      console.log(canvas.toDataURL())
     },
     stopDrawingRectangle () {
       this.isDrawing = false
+    },
+    rotate () {
+      this.contextDraw.save() // save current state
+      // this.contextDraw.translate(this.$refs.canvasDraw.width / 2, this.$refs.canvasDraw.height / 2)
+      console.log(this.imageDraw.a)
+      this.contextDraw.rotate(30 * Math.PI / 180)
+      this.contextDraw.drawImage(this.imageDraw, -this.cropper.width / 2, -this.cropper.width / 2)
+      this.contextDraw.restore()
     }
   }
 }
@@ -118,9 +140,7 @@ export default {
 
 <style scoped>
 .canvas-container-rect {
-  height: 500px;
-  width: 500px;
-  border: 2px solid #000;
+  border: 1px solid #000;
   //margin-left: 100px;
   //margin-top: 100px;
 }
