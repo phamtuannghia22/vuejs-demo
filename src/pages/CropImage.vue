@@ -1,8 +1,8 @@
 <template>
   <div class="page">
     <div class="position-relative">
-      <canvas id="canvas" width="500" height="500" ref="canvasDraw"></canvas>
-      <canvas class="canvas-container-rect position-absolute" width="500" height="500" style="top: 0; left: 0" ref="canvasCrop" @mousedown="startDrawingRectangle($event)" @mousemove="drawRectangle($event)" @mouseleave="stopDrawingRectangle" @mouseup="stopDrawingRectangle"></canvas>
+      <canvas id="canvas" ref="canvasDraw"></canvas>
+      <canvas class="canvas-container-rect position-absolute" style="top: 0; left: 0" ref="canvasCrop" @mousedown="startDrawingRectangle($event)" @mousemove="drawRectangle($event)" @mouseleave="stopDrawingRectangle" @mouseup="stopDrawingRectangle"></canvas>
     </div>
     <b-button size="sm" variant="primary" @click="crop()">Crop</b-button>
     <b-button size="sm" variant="primary" @click="convertImg()">convert</b-button>
@@ -39,7 +39,8 @@ export default {
         isHeightGretterWidth: function () {
           return this.realHeight > this.realWidth
         }
-      }
+      },
+      rotateState: 0
     }
   },
   mounted () {
@@ -56,9 +57,10 @@ export default {
       const self = this
       image.onload = function () {
         const size = self.size
-        self.imageUpload.ratio = image.width / 500
         self.imageUpload.realWidth = image.width
         self.imageUpload.realHeight = image.height
+        self.imageUpload.src = src
+        self.imageUpload.ratio = self.imageUpload.isHeightGretterWidth() ? image.height / size : image.width / size
         self.imageUpload.width = self.imageUpload.isHeightGretterWidth() ? (image.width / self.imageUpload.ratio) : size
         self.imageUpload.height = self.imageUpload.isHeightGretterWidth() ? size : (image.height / self.imageUpload.ratio)
 
@@ -77,8 +79,8 @@ export default {
     },
     startDrawingRectangle  (nativeEvent) {
       console.log('start draw')
-      const canvas = this.$refs.canvasCrop
-      const canvasOffSet = canvas.getBoundingClientRect()
+      const canvasCrop = this.$refs.canvasCrop
+      const canvasOffSet = canvasCrop.getBoundingClientRect()
       this.canvasOffSetX = canvasOffSet.left
       this.canvasOffSetY = canvasOffSet.top
       nativeEvent.preventDefault()
@@ -86,6 +88,7 @@ export default {
       this.cropper.sx = nativeEvent.clientX - this.canvasOffSetX
       this.cropper.sy = nativeEvent.clientY - this.canvasOffSetY
       this.isDrawing = true
+      this.imageProcessing(this.$refs.canvasDraw.toDataURL())
     },
     drawRectangle (nativeEvent) {
       if (!this.isDrawing) {
@@ -107,32 +110,86 @@ export default {
     },
     crop () {
       const canvasDraw = this.$refs.canvasDraw
+      const canvasCrop = this.$refs.canvasCrop
+      // const canvas = document.createElement('canvas')
+      // const ctx = canvas.getContext('2d')
+
       const image = new Image()
       image.src = this.url
       const self = this
       image.onload = function () {
         self.contextCrop.clearRect(0, 0, self.$refs.canvasCrop.width, self.$refs.canvasCrop.height)
         self.contextDraw.clearRect(0, 0, self.$refs.canvasDraw.width, self.$refs.canvasDraw.height)
-        self.contextDraw.drawImage(image, self.cropper.sx * self.imageUpload.ratio, self.cropper.sy * self.imageUpload.ratio, self.cropper.width * self.imageUpload.ratio, self.cropper.height * self.imageUpload.ratio, 0, 0, self.size, self.cropper.height * self.size / self.cropper.width)
-        // console.log(canvasDraw.toDataURL())
-        self.imageProcessing(canvasDraw.toDataURL())
+        self.imageUpload.realWidth = self.cropper.width * self.imageUpload.ratio
+        self.imageUpload.realHeight = self.cropper.height * self.imageUpload.ratio
+        self.imageUpload.width = self.imageUpload.isHeightGretterWidth() ? self.imageUpload.realWidth * self.size / self.imageUpload.realHeight : self.size
+        self.imageUpload.height = self.imageUpload.isHeightGretterWidth() ? self.size : self.cropper.height * self.size / self.cropper.width
+        canvasDraw.width = self.imageUpload.width
+        canvasDraw.height = self.imageUpload.height
+        canvasCrop.width = self.imageUpload.width
+        canvasCrop.height = self.imageUpload.height
+        // canvas.width = self.imageUpload.realWidth
+        // canvas.height = self.imageUpload.realHeight
+        self.contextDraw.drawImage(image, self.cropper.sx * self.imageUpload.ratio, self.cropper.sy * self.imageUpload.ratio, self.cropper.width * self.imageUpload.ratio, self.cropper.height * self.imageUpload.ratio, 0, 0, self.imageUpload.width, self.imageUpload.height)
+        self.imageUpload.src = canvasDraw.toDataURL()
+
+        // ctx.drawImage(image, self.cropper.sx * self.imageUpload.ratio, self.cropper.sy * self.imageUpload.ratio, self.cropper.width * self.imageUpload.ratio, self.cropper.height * self.imageUpload.ratio, 0, 0, self.imageUpload.realWidth, self.imageUpload.realHeight)
+        // self.imageUpload.src = canvas.toDataURL()
       }
     },
     convertImg () {
-      const canvas = document.getElementById('canvas')
-      console.log(canvas)
-      console.log(canvas.toDataURL())
+      console.log(this.imageUpload.src)
     },
     stopDrawingRectangle () {
       this.isDrawing = false
     },
     rotate () {
-      this.contextDraw.save() // save current state
-      // this.contextDraw.translate(this.$refs.canvasDraw.width / 2, this.$refs.canvasDraw.height / 2)
-      console.log(this.imageDraw.a)
-      this.contextDraw.rotate(30 * Math.PI / 180)
-      this.contextDraw.drawImage(this.imageDraw, -this.cropper.width / 2, -this.cropper.width / 2)
-      this.contextDraw.restore()
+      const canvasDraw = this.$refs.canvasDraw
+      const canvasCrop = this.$refs.canvasCrop
+      this.rotateState = this.rotateState >= 3 ? 0 : this.rotateState + 1
+      if (this.rotateState === 3 || this.rotateState === 1) {
+        canvasDraw.width = this.imageUpload.height
+        canvasDraw.height = this.imageUpload.width
+        canvasCrop.width = this.imageUpload.height
+        canvasCrop.height = this.imageUpload.width
+      } else {
+        canvasDraw.width = this.imageUpload.width
+        canvasDraw.height = this.imageUpload.height
+        canvasCrop.width = this.imageUpload.width
+        canvasCrop.height = this.imageUpload.height
+      }
+
+      const image = new Image()
+      image.src = this.imageUpload.src
+      const self = this
+      image.onload = function () {
+        self.contextDraw.save() // save current state
+        switch (self.rotateState) {
+          case 0: {
+            self.contextDraw.translate(self.$refs.canvasDraw.width, self.$refs.canvasDraw.height)
+            break
+          }
+          case 1: {
+            self.contextDraw.translate(0, self.$refs.canvasDraw.height)
+            self.contextDraw.rotate(Math.PI / 2)
+            break
+          }
+          case 2: {
+            self.contextDraw.translate(0, 0)
+            self.contextDraw.rotate(Math.PI)
+            break
+          }
+          case 3: {
+            self.contextDraw.translate(self.$refs.canvasDraw.width, 0)
+            self.contextDraw.rotate(-Math.PI / 2)
+            break
+          }
+        }
+        self.contextDraw.drawImage(image, 0, 0, -self.imageUpload.width, -self.imageUpload.height)
+        self.contextDraw.restore()
+        // self.imageUpload.src = canvasDraw.toDataURL()
+        console.log(self.rotateState)
+      }
     }
   }
 }
@@ -140,7 +197,7 @@ export default {
 
 <style scoped>
 .canvas-container-rect {
-  border: 1px solid #000;
+  //border: 1px solid #000;
   //margin-left: 100px;
   //margin-top: 100px;
 }
